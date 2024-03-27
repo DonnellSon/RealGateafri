@@ -7,7 +7,7 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "https://localhost:3000",
+        origin: ["https://localhost:3000","https://beta.gateafri.com"],
     }
 });
 
