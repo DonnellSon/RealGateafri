@@ -36,7 +36,9 @@ io.on('connection', (socket) => {
     })
     socket.on('sendNotification', ({ notification, currentUser }) => {
         try {
-            const receivers = notification.receivers.filter(u=>u.id!==currentUser).map(user => connectedUsers.find(conn => conn.userId === user.id)?.socketId).filter(socketId => socketId !== null);
+            const connectedUserIds = new Set(connected.map(conn => conn.userId));
+            const receivers = notification.receivers.filter(r => connectedUserIds.has(r.userId)).map(user => connectedUsers.find(conn => conn.userId === user.id)?.socketId).filter(socketId => socketId !== null);
+
             console.log(receivers, 'RECEIVERS')
             io.to(receivers)
                 .emit('newNotification', notification)
